@@ -6,6 +6,7 @@ import OnboardingWidget from "../widgets/onboarding_widget";
 import NewWidget from "../widgets/new_widget";
 import NumberCardWidget from "../widgets/number_card_widget";
 import QuickListWidget from "../widgets/quick_list_widget";
+import FrameWidget from "./frame_widget";
 
 frappe.provide("frappe.widget");
 
@@ -17,11 +18,13 @@ frappe.widget.widget_factory = {
 	onboarding: OnboardingWidget,
 	number_card: NumberCardWidget,
 	quick_list: QuickListWidget,
+	frame: FrameWidget,
 };
 
 frappe.widget.make_widget = (opts) => {
 	const widget_class = frappe.widget.widget_factory[opts.widget_type];
 	if (widget_class) {
+		console.log(opts);
 		return new widget_class(opts);
 	} else {
 		// eslint-disable-next-line
@@ -78,6 +81,7 @@ export default class WidgetGroup {
 	}
 
 	add_widget(widget) {
+
 		let widget_object = frappe.widget.make_widget({
 			...widget,
 			widget_type: this.type,

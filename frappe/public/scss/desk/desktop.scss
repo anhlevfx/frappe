@@ -806,6 +806,14 @@ body {
 			}
 		}
 	}
+
+	&.frame-widget-box {
+		&.edit-mode {
+			.widget-head {
+				margin-bottom: 6px;
+			}
+		}
+	}
 }
 
 .onboarding-success {
@@ -1316,6 +1324,10 @@ body {
 						}
 
 						&.shortcut {
+							background-color: var(--control-bg);
+						}
+
+						&.frame {
 							background-color: var(--control-bg);
 						}
 

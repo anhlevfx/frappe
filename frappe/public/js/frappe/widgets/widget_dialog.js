@@ -80,7 +80,7 @@ class WidgetDialog {
 		this.filter_group = new frappe.ui.FilterGroup({
 			parent: this.dialog.get_field("filter_area").$wrapper,
 			doctype: doctype,
-			on_change: () => {},
+			on_change: () => { },
 		});
 
 		frappe.model.with_doctype(doctype, () => {
@@ -116,6 +116,41 @@ class ChartDialog extends WidgetDialog {
 	process_data(data) {
 		data.label = data.label ? data.label : data.chart_name;
 		return data;
+	}
+}
+
+class FrameDialog extends WidgetDialog {
+	constructor(opts) {
+		super(opts);
+	}
+
+	get_fields() {
+		return [
+			{
+				fieldtype: "Data",
+				fieldname: "label",
+				label: "Label",
+			},
+			{
+				fieldtype: "Small Text",
+				fieldname: "url",
+				label: "Url",
+				reqd: 1,
+			},
+			{
+				fieldtype: "Data",
+				fieldname: "frame_height",
+				label: "Height",
+				reqd: 1,
+				default: "80vh",
+			},
+			{
+				fieldtype: "Check",
+				fieldname: "is_show_label",
+				label: "Show label",
+				reqd: 1,
+			},
+		];
 	}
 }
 class QuickListDialog extends WidgetDialog {
@@ -656,6 +691,7 @@ export default function get_dialog_constructor(type) {
 		links: CardDialog,
 		onboarding: OnboardingDialog,
 		quick_list: QuickListDialog,
+		frame: FrameDialog,
 	};
 
 	return widget_map[type] || WidgetDialog;

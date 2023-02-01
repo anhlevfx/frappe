@@ -10,6 +10,7 @@ import QuickList from "./quick_list";
 
 // import tunes
 import HeaderSize from "./header_size";
+import Frame from "./frame";
 
 frappe.provide("frappe.workspace_block");
 
@@ -22,6 +23,7 @@ frappe.workspace_block.blocks = {
 	spacer: Spacer,
 	onboarding: Onboarding,
 	quick_list: QuickList,
+	frame: Frame,
 };
 
 frappe.workspace_block.tunes = {

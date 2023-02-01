@@ -167,6 +167,8 @@ class Workspace:
 
 		self.quick_lists = {"items": self.get_quick_lists()}
 
+		self.frames = {"items": self.get_frames()}
+
 	def _doctype_contains_a_record(self, name):
 		exists = self.table_counts.get(name, False)
 
@@ -286,6 +288,18 @@ class Workspace:
 		return items
 
 	@handle_not_exist
+	def get_frames(self):
+		items = []
+		frames = self.doc.frames
+
+		print(frames)
+
+		for item in frames:			
+			items.append(item.as_dict())
+
+		return items
+
+	@handle_not_exist
 	def get_quick_lists(self):
 		items = []
 		quick_lists = self.doc.quick_lists
@@ -354,6 +368,7 @@ def get_desktop_page(page):
 			"cards": workspace.cards,
 			"onboardings": workspace.onboardings,
 			"quick_lists": workspace.quick_lists,
+			"frames": workspace.frames,
 		}
 	except DoesNotExistError:
 		frappe.log_error("Workspace Missing")
@@ -484,6 +499,8 @@ def save_new_widget(doc, page, blocks, new_widgets):
 			doc.quick_lists.extend(new_widget(widgets.quick_list, "Workspace Quick List", "quick_lists"))
 		if widgets.card:
 			doc.build_links_table_from_card(widgets.card)
+		if widgets.frame:
+			doc.frames.extend(new_widget(widgets.frame, "Workspace Frame", "frames"))
 
 	# remove duplicate and unwanted widgets
 	clean_up(doc, blocks)
@@ -511,12 +528,12 @@ def save_new_widget(doc, page, blocks, new_widgets):
 def clean_up(original_page, blocks):
 	page_widgets = {}
 
-	for wid in ["shortcut", "card", "chart", "quick_list"]:
+	for wid in ["shortcut", "card", "chart", "quick_list", "frame"]:
 		# get list of widget's name from blocks
 		page_widgets[wid] = [x["data"][wid + "_name"] for x in loads(blocks) if x["type"] == wid]
 
 	# shortcut, chart & quick_list cleanup
-	for wid in ["shortcut", "chart", "quick_list"]:
+	for wid in ["shortcut", "chart", "quick_list", "frame"]:
 		updated_widgets = []
 		original_page.get(wid + "s").reverse()
 

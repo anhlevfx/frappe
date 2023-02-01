@@ -87,17 +87,16 @@ frappe.views.Workspace = class Workspace {
 			>
 				<div class="desk-sidebar-item standard-sidebar-item ${item.selected ? "selected" : ""}">
 					<a
-						href="/app/${
-							item.public
-								? frappe.router.slug(item.title)
-								: "private/" + frappe.router.slug(item.title)
-						}"
+						href="/app/${item.public
+				? frappe.router.slug(item.title)
+				: "private/" + frappe.router.slug(item.title)
+			}"
 						class="item-anchor ${item.is_editable ? "" : "block-click"}" title="${__(item.title)}"
 					>
 						<span class="sidebar-item-icon" item-icon=${item.icon || "folder-normal"}>${frappe.utils.icon(
-			item.icon || "folder-normal",
-			"md"
-		)}</span>
+				item.icon || "folder-normal",
+				"md"
+			)}</span>
 						<span class="sidebar-item-label">${__(item.title)}<span>
 					</a>
 					<div class="sidebar-item-control"></div>
@@ -249,7 +248,6 @@ frappe.views.Workspace = class Workspace {
 			if (add) {
 				$sidebar[0].firstElementChild.classList.add("selected");
 				if (sidebar_page) sidebar_page.selected = true;
-
 				// open child sidebar section if closed
 				$sidebar.parent().hasClass("hidden") && $sidebar.parent().removeClass("hidden");
 
@@ -376,9 +374,11 @@ frappe.views.Workspace = class Workspace {
 				this.editor.configuration.tools.card.config.page_data = this.page_data;
 				this.editor.configuration.tools.onboarding.config.page_data = this.page_data;
 				this.editor.configuration.tools.quick_list.config.page_data = this.page_data;
+				this.editor.configuration.tools.frame.config.page_data = this.page_data;
 				this.editor.render({ blocks: this.content || [] });
 			});
 		} else {
+			console.log(this.content);
 			this.initialize_editorjs(this.content);
 		}
 	}
@@ -1275,6 +1275,7 @@ frappe.views.Workspace = class Workspace {
 	}
 
 	initialize_editorjs(blocks) {
+		console.log(this.page_data);
 		this.tools = {
 			header: {
 				class: this.blocks["header"],
@@ -1310,6 +1311,12 @@ frappe.views.Workspace = class Workspace {
 			},
 			onboarding: {
 				class: this.blocks["onboarding"],
+				config: {
+					page_data: this.page_data || [],
+				},
+			},
+			frame: {
+				class: this.blocks["frame"],
 				config: {
 					page_data: this.page_data || [],
 				},
